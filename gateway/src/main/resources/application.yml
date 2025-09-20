@@ -1,0 +1,47 @@
+server:
+  port: 8080
+spring:
+  application:
+    name: gateway
+  cloud:
+    gateway:
+      default-filters:
+        - RemoveRequestHeader=Cookie
+      routes:
+        - id: user
+          uri: lb://user-service
+          predicates: [ Path=/api/users/** ]
+        - id: account
+          uri: lb://account-service
+          predicates: [ Path=/api/accounts/** ]
+        - id: transaction
+          uri: lb://transaction-service
+          predicates: [ Path=/api/transactions/** ]
+        - id: budget
+          uri: lb://budget-service
+          predicates: [ Path=/api/budgets/** ]
+        - id: rules
+          uri: lb://rules-service
+          predicates: [ Path=/api/rules/** ]
+        - id: import
+          uri: lb://import-service
+          predicates: [ Path=/api/imports/** ]
+        - id: analytics
+          uri: lb://analytics-service
+          predicates: [ Path=/api/analytics/** ]
+eureka:
+  client:
+    service-url:
+      defaultZone: http://localhost:8761/eureka/
+management:
+  endpoints:
+    web:
+      exposure:
+        include: health,info
+# NOTE: For now, the resource server is disabled. Wire your Keycloak later.
+# spring:
+#   security:
+#     oauth2:
+#       resourceserver:
+#         jwt:
+#           issuer-uri: http://localhost:8081/realms/finance
