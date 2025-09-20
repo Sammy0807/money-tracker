@@ -30,16 +30,20 @@ public class UserController {
   @GetMapping("/me")
   public ResponseEntity<UserDto> me(@AuthenticationPrincipal Jwt jwt) {
     UUID id = UUID.fromString(jwt.getClaim("sub"));
-    return service.find(id).map(u -> ResponseEntity.ok(mapper.toDto(u)))
-        .orElse(ResponseEntity.notFound().build());
+    String email = jwt.getClaim("email");
+    String name = jwt.getClaim("name");
+    var user = service.find(id).orElseGet(() -> service.upsertFromAuth(id, email, name));
+    return ResponseEntity.ok(mapper.toDto(user));
   }
 
+
   @PostMapping
-  public ResponseEntity<UserDto> create(@RequestParam(required=false) UUID id,
-                                        @Validated @RequestBody CreateUserRequest req) {
+  public ResponseEntity<UserDto> create(@RequestParam(value = "id", required = false) UUID id,
+      @Validated @RequestBody CreateUserRequest req) {
     UUID uid = id != null ? id : UUID.randomUUID();
     return ResponseEntity.ok(mapper.toDto(service.create(uid, req)));
   }
+
 
   @PatchMapping("/me")
   public ResponseEntity<UserDto> updateMe(@AuthenticationPrincipal Jwt jwt,

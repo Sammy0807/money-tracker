@@ -52,7 +52,19 @@ services:
     volumes:
       - mssqldata:/var/opt/mssql
 
+  keycloak:
+    image: quay.io/keycloak/keycloak:21.1.1
+    command: start-dev
+    environment:
+      KEYCLOAK_ADMIN: admin
+      KEYCLOAK_ADMIN_PASSWORD: admin
+    ports:
+      - "8081:8080"
+    volumes:
+      - keycloak_data:/opt/keycloak/data
+
 volumes:
   pgdata: {}
   minio: {}
   mssqldata: {}
+  keycloak_data: {}
