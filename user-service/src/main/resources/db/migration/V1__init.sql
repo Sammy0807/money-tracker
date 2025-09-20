@@ -1,0 +1,14 @@
+IF NOT EXISTS (SELECT * FROM sysobjects WHERE name='users' AND xtype='U')
+BEGIN
+  CREATE TABLE dbo.users (
+    id UNIQUEIDENTIFIER NOT NULL PRIMARY KEY,
+    email NVARCHAR(320) NOT NULL UNIQUE,
+    name NVARCHAR(100) NULL,
+    locale NVARCHAR(10) NULL,
+    currency NVARCHAR(10) NULL,
+    timezone NVARCHAR(64) NULL,
+    feature_flags_json NVARCHAR(MAX) NULL,
+    created_at DATETIMEOFFSET(6) NOT NULL CONSTRAINT DF_users_created_at DEFAULT SYSDATETIMEOFFSET(),
+    updated_at DATETIMEOFFSET(6) NOT NULL CONSTRAINT DF_users_updated_at DEFAULT SYSDATETIMEOFFSET()
+  );
+END;
