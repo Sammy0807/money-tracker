@@ -5,23 +5,17 @@ import com.example.finance.accountservice.dto.AccountDto;
 import com.example.finance.accountservice.dto.CreateAccountRequest;
 import com.example.finance.accountservice.dto.UpdateAccountRequest;
 import org.mapstruct.*;
+import org.mapstruct.factory.Mappers;
+import org.mapstruct.Mapper;
 
-@Mapper(
-    componentModel = "spring",
-    injectionStrategy = InjectionStrategy.CONSTRUCTOR,
-    unmappedTargetPolicy = ReportingPolicy.IGNORE
-)
+@Mapper(componentModel = "spring")
 public interface AccountMapper {
+  AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
-  // entity -> dto
-  AccountDto toDto(Account entity);
+  AccountDto toDto(Account account);
 
-  // create request -> entity
-  @Mapping(target = "id", ignore = true)
-  @Mapping(target = "createdAt", ignore = true)
-  @Mapping(target = "updatedAt", ignore = true)
-  Account fromCreate(CreateAccountRequest req);
+  Account toEntity(CreateAccountRequest req);
 
-  // patch update onto existing entity
-  void update(@MappingTarget Account target, UpdateAccountRequest req);
+  @BeanMapping(nullValuePropertyMappingStrategy = NullValuePropertyMappingStrategy.IGNORE)
+  void updateFromDto(UpdateAccountRequest req, @MappingTarget Account account);
 }
