@@ -11,9 +11,10 @@ spring:
         - id: user
           uri: lb://user-service
           predicates: [ Path=/api/users/** ]
-        - id: account
-          uri: lb://account-service
-          predicates: [ Path=/api/accounts/** ]
+        - id: account-service
+          uri: http://localhost:9009
+          predicates:
+            - Path=/api/accounts/**
         - id: transaction
           uri: lb://transaction-service
           predicates: [ Path=/api/transactions/** ]
