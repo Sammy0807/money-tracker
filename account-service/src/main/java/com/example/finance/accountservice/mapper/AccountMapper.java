@@ -6,11 +6,9 @@ import com.example.finance.accountservice.dto.CreateAccountRequest;
 import com.example.finance.accountservice.dto.UpdateAccountRequest;
 import org.mapstruct.*;
 import org.mapstruct.factory.Mappers;
-import org.mapstruct.Mapper;
 
-@Mapper(componentModel = "spring")
+@Mapper(componentModel = "spring", injectionStrategy = InjectionStrategy.CONSTRUCTOR, unmappedTargetPolicy = ReportingPolicy.IGNORE)
 public interface AccountMapper {
-  AccountMapper INSTANCE = Mappers.getMapper(AccountMapper.class);
 
   AccountDto toDto(Account account);
 

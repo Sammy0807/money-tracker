@@ -6,7 +6,7 @@ spring:
     name: account-service
 
   datasource:
-    url: jdbc:sqlserver://localhost:1433;databaseName=finance;encrypt=false;trustServerCertificate=true
+    url: jdbc:sqlserver://localhost:1433;databaseName=finance;encrypt=true;trustServerCertificate=true
     username: sa
     password: YourStrong!Passw0rd
     driver-class-name: com.microsoft.sqlserver.jdbc.SQLServerDriver

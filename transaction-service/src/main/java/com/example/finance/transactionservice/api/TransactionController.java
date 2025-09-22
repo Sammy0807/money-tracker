@@ -56,8 +56,8 @@ public class TransactionController {
   }
 
   @GetMapping("/by-user/{userId}")
-  public Page<TransactionResponse> byUser(@PathVariable UUID userId,
-                                          @RequestParam(defaultValue = "0") int page,
+  public Page<TransactionResponse> byUser(@PathVariable("userId") UUID userId,
+                                              @RequestParam(defaultValue = "0") int page,
                                           @RequestParam(defaultValue = "20") int size) {
     return service.listByUser(userId, page, size).map(mapper::toResponse);
   }
